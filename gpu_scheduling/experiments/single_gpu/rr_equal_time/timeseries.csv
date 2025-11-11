@@ -1,0 +1,3 @@
+timestamp,job_name,memory_usage,total_memory,working_time,total_running_time
+1762902275,"gpt2-small, first instance",5975441408,51539607552,60,60
+1762902335,"gpt2-small, second instance",44545359872,51539607552,60,60

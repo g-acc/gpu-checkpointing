@@ -17,5 +17,5 @@ jobs = [
 
 if __name__ == "__main__":
     round_robin_equal_time_scheduler = wq.Scheduler(get_next_job_fn=lambda _: 0, get_working_time_fn=lambda _: 60)
-    exp = wq.WorkQueue(jobs, round_robin_equal_time_scheduler)
+    exp = wq.WorkQueue(jobs, round_robin_equal_time_scheduler, "gpu_scheduling/experiments/single_gpu/rr_equal_time/")
     exp.manage_schedule()
