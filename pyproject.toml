@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpu_scheduling"
+version = "0.1.0"
+description = "GPU checkpointing and scheduling experiments"
+authors = [{ name = "Nikhil Jain" }]
+readme = "README.md"
+requires-python = ">=3.8"
+
+# TODO: add deps
+dependencies = [
+  "torch>=2.0",
+  "numpy"
+]
+
+[tool.setuptools.packages.find]
+where = ["gpu_scheduling"]
