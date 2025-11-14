@@ -7,6 +7,8 @@ import psutil
 import csv
 import pynvml
 import signal
+import threading
+import queue
 
 DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.mps.is_available() else "cpu"
 print("Device", DEVICE)
@@ -30,6 +32,28 @@ class WorkQueue():
         self.jobs = jobs
         self.scheduler = scheduler
         self.metrics_output_dir = metrics_output_dir
+
+    def _output_reader(self, proc, job_name, stream_name, output_queue):
+        """Thread function to read output from a subprocess stream and prefix it."""
+        try:
+            for line in iter(proc.stdout.readline if stream_name == 'stdout' else proc.stderr.readline, b''):
+                if line:  # Only process non-empty lines
+                    decoded_line = line.decode('utf-8', errors='replace').rstrip()
+                    if decoded_line:  # Skip empty lines after stripping
+                        prefixed_line = f"[{job_name}] {decoded_line}"
+                        output_queue.put(prefixed_line)
+        except Exception as e:
+            output_queue.put(f"[{job_name}] Error reading {stream_name}: {e}")
+
+    def _display_output(self, output_queue):
+        """Thread function to display queued output."""
+        while True:
+            try:
+                line = output_queue.get(timeout=0.1)
+                print(line)
+                output_queue.task_done()
+            except queue.Empty:
+                continue
 
     def get_gpu_stats(self):
         """Return memory used, total memory, and utilization for all GPUs"""
@@ -96,12 +120,46 @@ class WorkQueue():
                     job.running_time += working_time
                     print(" -", job.name)
 
-                # Start all processes
+                # Start all processes with output capture
+                output_queue = queue.Queue()
+                threads = []
+
                 for job in running_jobs:
-                    proc = subprocess.Popen(job.cmd, stdout=sys.stdout, stderr=sys.stderr)
+                    # Start process with captured output
+                    proc = subprocess.Popen(
+                        job.cmd,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        bufsize=1,  # Line buffered
+                        universal_newlines=False  # We'll decode manually
+                    )
                     running_procs.append(proc)
 
+                    # Start output reader threads for stdout and stderr
+                    stdout_thread = threading.Thread(
+                        target=self._output_reader,
+                        args=(proc, job.name, 'stdout', output_queue)
+                    )
+                    stderr_thread = threading.Thread(
+                        target=self._output_reader,
+                        args=(proc, job.name, 'stderr', output_queue)
+                    )
+                    stdout_thread.daemon = True
+                    stderr_thread.daemon = True
+                    stdout_thread.start()
+                    stderr_thread.start()
+                    threads.extend([stdout_thread, stderr_thread])
+
+                # Start display thread
+                display_thread = threading.Thread(target=self._display_output, args=(output_queue,))
+                display_thread.daemon = True
+                display_thread.start()
+
                 time.sleep(working_time)
+
+                # Give a moment for any remaining output to be processed
+                time.sleep(0.1)
+                output_queue.join()  # Wait for all queued output to be displayed
 
                 # Collect metrics
                 job_names = [job.name for job in running_jobs]
