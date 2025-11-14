@@ -51,8 +51,8 @@ class WorkQueue():
     def manage_schedule(self):
         # Prepare CSV fieldnames
         fieldnames = [
-            "timestamp", "job_name",
-            "working_time", "total_running_time"
+            "timestamp", "job_names",
+            "working_time", "total_running_times"
         ]
         if DEVICE == "cuda":
             num_gpus = pynvml.nvmlDeviceGetCount()
@@ -70,21 +70,48 @@ class WorkQueue():
 
             while self.jobs:
                 print("Num jobs", len(self.jobs))
-                job = self.jobs.pop(self.scheduler.get_next_job_fn(self.jobs))
+                # Get jobs to run (can be single or multiple)
+                job_indices = self.scheduler.get_next_job_fn(self.jobs)
+                if isinstance(job_indices, int):
+                    job_indices = [job_indices]  # Handle single job case
+
+                running_jobs = []
+                running_procs = []
+
+                # Sort indices in descending order to avoid index shifting when popping
+                job_indices = sorted(set(job_indices), reverse=True)
+                for idx in job_indices:
+                    if idx < len(self.jobs):
+                        job = self.jobs.pop(idx)
+                        running_jobs.append(job)
+
+                if not running_jobs:
+                    continue  # No valid jobs to run
+
                 working_time = self.scheduler.get_working_time_fn(self.jobs)
-                job.running_time += working_time
 
                 print("_______________________________________________")
-                print("Running", job.name, "for", working_time, "secs")
+                print("Running", len(running_jobs), "jobs for", working_time, "secs:")
+                for job in running_jobs:
+                    job.running_time += working_time
+                    print(" -", job.name)
 
-                proc = subprocess.Popen(job.cmd, stdout=sys.stdout, stderr=sys.stderr)
+                # Start all processes
+                for job in running_jobs:
+                    proc = subprocess.Popen(job.cmd, stdout=sys.stdout, stderr=sys.stderr)
+                    running_procs.append(proc)
+
                 time.sleep(working_time)
+
+                # Collect metrics
+                job_names = [job.name for job in running_jobs]
+                total_running_times = [job.running_time for job in running_jobs]
 
                 row = {
                     "timestamp": int(time.time()),
-                    "job_name": job.name,
+                    "job_names": ";".join(job_names),
                     "working_time": working_time,
-                    "total_running_time": job.running_time
+                    "total_running_times": ";".join(str(t) for t in total_running_times)
                 }
 
                 if DEVICE == "mps":
@@ -105,18 +132,19 @@ class WorkQueue():
                 writer.writerow(row)
                 timeseries.flush()
 
-                poll = proc.poll()
-                if poll is None:
-                    proc.send_signal(signal.SIGTERM)  # send SIGTERM
-                    try:
-                        proc.wait(timeout=10)
-                        print("Job exited gracefully", job.name)
-                    except subprocess.TimeoutExpired:
-                        print("Job did not exit in time, killing:", job.name)
-                        proc.kill()  # force kill
-                        proc.wait()
-                    finally:
-                        self.jobs.append(job)
-                else:
-                    print("Job finished: ", job.name, poll)
-                    proc.stdout
+                # Terminate all processes and check completion
+                for job, proc in zip(running_jobs, running_procs):
+                    poll = proc.poll()
+                    if poll is None:
+                        proc.send_signal(signal.SIGTERM)  # send SIGTERM
+                        try:
+                            proc.wait(timeout=10)
+                            print("Job exited gracefully:", job.name)
+                        except subprocess.TimeoutExpired:
+                            print("Job did not exit in time, killing:", job.name)
+                            proc.kill()  # force kill
+                            proc.wait()
+                        finally:
+                            self.jobs.append(job)  # Put back unfinished job
+                    else:
+                        print("Job finished:", job.name, "exit code:", poll)

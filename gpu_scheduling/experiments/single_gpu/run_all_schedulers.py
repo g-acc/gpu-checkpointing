@@ -7,6 +7,7 @@ This script runs all the different scheduling algorithms:
 - Round Robin Big and Small Jobs
 - Lottery Memory Proportional
 - Lottery Memory Inverse Proportional
+- Parallel GPT-2 Small Jobs
 """
 
 import sys
@@ -50,6 +51,12 @@ SCHEDULING_SCRIPTS = [
         "path": SCRIPT_DIR / "lottery_memory_inv_proportional" / "lottery_memory_inv_proportional.py",
         "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_inv_proportional.lottery_memory_inv_proportional",
         "output_dir": "lottery_memory_inv_proportional"
+    },
+    {
+        "name": "Parallel GPT-2 Small Jobs",
+        "path": SCRIPT_DIR / "parallel_gpu2_small" / "parallel_gpu2_small.py",
+        "module": "gpu_scheduling.experiments.single_gpu.parallel_gpu2_small.parallel_gpu2_small",
+        "output_dir": "parallel_gpu2_small"
     }
 ]
 
