@@ -2,7 +2,7 @@ from gpu_scheduling import workqueue as wq
 from pathlib import Path
 
 # Organized output directory structure
-OUTPUT_DIR = Path("results/single_gpu/rr_equal")
+OUTPUT_DIR = Path("results/single_gpu/rr_equal/60s_quanta")
 CHECKPOINT_DIR = OUTPUT_DIR / "checkpoints"
 CSV_DIR = OUTPUT_DIR / "csvs"
 

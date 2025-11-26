@@ -27,7 +27,7 @@ parser.add_argument("--num_samples", type=int, default=1000)
 parser.add_argument("--lr", type=float, default=5e-5)
 parser.add_argument("--checkpoint_dir", type=str, default="./checkpoints")
 parser.add_argument("--csv_file", type=str, default="./gpu_stats.csv")
-parser.add_argument("--save_every", type=int, default=0)
+parser.add_argument("--save_every", type=int, default=30)
 args = parser.parse_args()
 
 # -----------------------------

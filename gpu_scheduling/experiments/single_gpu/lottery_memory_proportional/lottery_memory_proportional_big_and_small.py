@@ -25,27 +25,39 @@ jobs = [
              "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
     ),
     wq.Job(
-        name=str("gpt2"),
+        name=str("gpt2-xl"),
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py",  
-             "--checkpoint_dir", str(CHECKPOINT_DIR / "big"),
-             "--csv_file", str(CSV_DIR / "gpt2.csv"),
-             "--model_name", "gpt2"]
-    )
+             "--checkpoint_dir", str(CHECKPOINT_DIR / "extra_large"),
+             "--csv_file", str(CSV_DIR / "gpt2_xl.csv"),
+             "--model_name", "gpt2-xl",
+             "--max_seq_len", "128"]
+    ),
 ]
 
-def get_next_job(jobs: list[wq.Job]):
-    # Assign lottery tickets based on memory usage.
-    # For the first lottery, split it equally (since we don't have memory usage yet)
-    tickets = [-2, 2] if (jobs[0].memory_usage_bytes == 0 or jobs[1].memory_usage_bytes == 0) \
-        else [-1 * jobs[0].memory_usage_bytes, jobs[1].memory_usage_bytes]
-    lotto = random.randrange(tickets[0], tickets[1])
-    print("Lottery tickets", tickets, "winning number", lotto)
-    if lotto >= 0:
-        return 1 
-    return 0
+def get_next_job_fn(jobs):
+    """
+    jobs: list[Job]
+    Returns an integer index into the jobs list.
+    """
+
+    # Build lottery bucket
+    ticket_bucket = []
+    for idx, job in enumerate(jobs):
+        # Convert bytes → ticket count
+        tickets = max(int(job.memory_usage_bytes // 1_000_000_000), 1)
+        ticket_bucket.extend([idx] * tickets)
+
+    # Safety fallback
+    if not ticket_bucket:
+        return 0
+
+    # Draw winner
+    choice = random.choice(ticket_bucket)
+    print("Lottery winner", choice)
+    return choice
 
 if __name__ == "__main__":
-    round_robin_equal_time_scheduler = wq.Scheduler(get_next_job_fn=get_next_job, get_working_time_fn=lambda _: 120)
+    round_robin_equal_time_scheduler = wq.Scheduler(get_next_job_fn=get_next_job_fn, get_working_time_fn=lambda _: 120)
     exp = wq.WorkQueue(jobs, round_robin_equal_time_scheduler, str(OUTPUT_DIR))
     exp.manage_schedule()

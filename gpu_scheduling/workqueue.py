@@ -76,7 +76,7 @@ class WorkQueue():
         # Prepare CSV fieldnames
         fieldnames = [
             "timestamp", "job_names",
-            "working_time", "total_running_times"
+            "working_time", "total_running_times", "scheduler_overhead", "total_scheduler_overhead"
         ]
         if DEVICE == "cuda":
             num_gpus = pynvml.nvmlDeviceGetCount()
@@ -92,7 +92,9 @@ class WorkQueue():
             writer = csv.DictWriter(timeseries, fieldnames=fieldnames)
             writer.writeheader()
 
+            total_scheduler_overhead = 0
             while self.jobs:
+                scheduler_start = time.time()
                 print("Num jobs", len(self.jobs))
                 # Get jobs to run (can be single or multiple)
                 job_indices = self.scheduler.get_next_job_fn(self.jobs)
@@ -123,7 +125,9 @@ class WorkQueue():
                 # Start all processes with output capture
                 output_queue = queue.Queue()
                 threads = []
-
+                
+                scheduler_end = time.time()
+                total_scheduler_overhead += scheduler_end - scheduler_start
                 for job in running_jobs:
                     # Start process with captured output
                     proc = subprocess.Popen(
@@ -169,7 +173,9 @@ class WorkQueue():
                     "timestamp": int(time.time()),
                     "job_names": ";".join(job_names),
                     "working_time": working_time,
-                    "total_running_times": ";".join(str(t) for t in total_running_times)
+                    "total_running_times": ";".join(str(t) for t in total_running_times),
+                    "scheduler_overhead": scheduler_end - scheduler_start,
+                    "total_scheduler_overhead": total_scheduler_overhead 
                 }
 
                 if DEVICE == "mps":
@@ -196,7 +202,7 @@ class WorkQueue():
                     if poll is None:
                         proc.send_signal(signal.SIGTERM)  # send SIGTERM
                         try:
-                            proc.wait(timeout=10)
+                            proc.wait(timeout=20)
                             print("Job exited gracefully:", job.name)
                         except subprocess.TimeoutExpired:
                             print("Job did not exit in time, killing:", job.name)

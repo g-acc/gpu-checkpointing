@@ -2,7 +2,7 @@ from gpu_scheduling import workqueue as wq
 from pathlib import Path
 
 # Organized output directory structure
-OUTPUT_DIR = Path("results/single_gpu/rr_big_and_small")
+OUTPUT_DIR = Path("results/single_gpu/rr_equal/120s_quanta")
 CHECKPOINT_DIR = OUTPUT_DIR / "checkpoints"
 CSV_DIR = OUTPUT_DIR / "csvs"
 
@@ -12,19 +12,18 @@ CSV_DIR.mkdir(parents=True, exist_ok=True)
 
 jobs = [
     wq.Job(
-        name=str("gpt2-small"),
+        name=str("gpt2-small, first instance"),
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py", 
-             "--checkpoint_dir", str(CHECKPOINT_DIR / "small"),
-             "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
+             "--checkpoint_dir", str(CHECKPOINT_DIR / "proc1"),
+             "--csv_file", str(CSV_DIR / "gpt2_small_first_instance.csv")]
     ),
     wq.Job(
-        name=str("gpt2-large"),
+        name=str("gpt2-small, second instance"),
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py",  
-             "--checkpoint_dir", str(CHECKPOINT_DIR / "big"),
-             "--csv_file", str(CSV_DIR / "gpt2.csv"),
-             "--model_name", "gpt2"]
+             "--checkpoint_dir", str(CHECKPOINT_DIR / "proc2"),
+             "--csv_file", str(CSV_DIR / "gpt2_small_second_instance.csv")]
     )
 ]
 

@@ -15,49 +15,68 @@ import runpy
 import os
 from pathlib import Path
 
-# Get the directory where this script is located
 SCRIPT_DIR = Path(__file__).parent.absolute()
 # Get the project root (3 levels up: single_gpu -> experiments -> gpu_scheduling -> project root)
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
-# Results directory for organized output
 RESULTS_DIR = PROJECT_ROOT / "results" / "single_gpu"
 
 # Add project root to Python path so imports work when running directly
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-# Define all scheduling scripts to run with their output directory names
 SCHEDULING_SCRIPTS = [
+
     {
-        "name": "Round Robin Equal Jobs",
-        "path": SCRIPT_DIR / "rr_equal" / "round_robin_equal_jobs.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_equal.round_robin_equal_jobs",
-        "output_dir": "rr_equal"
+        "name": "Lottery Scheduling Big and Small 120s quanta",
+        "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional_big_and_small.py",
+        "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_big_and_small",
+        "output_dir": "lottery_memory_proportional_big_and_small"
+    },
+
+    {
+        "name": "Lottery Scheduling One Big Many Small 120s quanta",
+        "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional_one_big_many_small.py",
+        "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_one_big_many_small",
+        "output_dir": "lottery_memory_proportional_one_big_many_small"
+    },
+    
+
+    {
+        "name": "Round Robin Big and Small Jobs 100s Quanta",
+        "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_100s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_100s_quanta",
+        "output_dir": "rr_big_and_small_100s"
     },
     {
-        "name": "Round Robin Big and Small Jobs",
-        "path": SCRIPT_DIR / "rr_big_and_small" / "round_robin_big_and_small_jobs.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.round_robin_big_and_small_jobs",
-        "output_dir": "rr_big_and_small"
+        "name": "Round Robin Big and Small Jobs 200s Quanta",
+        "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_200s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_200s_quanta",
+        "output_dir": "rr_big_and_small_200s"
+    }, 
+    {
+        "name": "Round Robin One Big Many Small 100s Quanta",
+        "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_100s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_100s_quanta",
+        "output_dir": "rr_one_big_many_small_100s"
     },
     {
-        "name": "Lottery Memory Proportional",
-        "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional.py",
-        "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional",
-        "output_dir": "lottery_memory_proportional"
+        "name": "Round Robin One Big Many Small 200s Quanta",
+        "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_200s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_200s_quanta",
+        "output_dir": "rr_one_big_many_small_200s"
     },
     {
-        "name": "Lottery Memory Inverse Proportional",
-        "path": SCRIPT_DIR / "lottery_memory_inv_proportional" / "lottery_memory_inv_proportional.py",
-        "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_inv_proportional.lottery_memory_inv_proportional",
-        "output_dir": "lottery_memory_inv_proportional"
+        "name": "Round Robin Equal Jobs 60s Quanta",
+        "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_60s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_60s_quanta",
+        "output_dir": "rr_equal_60s"
     },
     {
-        "name": "Parallel GPT-2 Small Jobs",
-        "path": SCRIPT_DIR / "parallel_gpu2_small" / "parallel_gpu2_small.py",
-        "module": "gpu_scheduling.experiments.single_gpu.parallel_gpu2_small.parallel_gpu2_small",
-        "output_dir": "parallel_gpu2_small"
-    }
+        "name": "Round Robin Equal Jobs 120s Quanta",
+        "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_120s_quanta.py",
+        "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_120s_quanta",
+        "output_dir": "rr_equal_120s"
+    },
 ]
 
 
