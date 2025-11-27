@@ -62,8 +62,9 @@ def analyze_csv(path, combined_file):
         return
 
     required_cols = {
-        "timestamp", "job_names", "working_time",
-        "total_running_times", "mem_used", "mem_total"
+       "timestamp","job_names","working_time","total_running_times",
+       "scheduler_overhead","total_scheduler_overhead","gpu0_mem_used",
+       "gpu0_mem_total","gpu0_util_gpu","gpu0_util_mem"
     }
     if not required_cols.issubset(df.columns):
         print(f"SKIP (missing required columns): {path}")
@@ -82,7 +83,7 @@ def analyze_csv(path, combined_file):
     # Average memory usage
     # ------------------------------------------------------------
     avg_mem = (
-        df.groupby("job_names")["mem_used"].mean().to_dict()
+        df.groupby("job_names")["gpu0_mem_used"].mean().to_dict()
     )
 
     # ------------------------------------------------------------
