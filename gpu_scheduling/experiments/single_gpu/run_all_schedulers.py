@@ -27,6 +27,21 @@ if str(PROJECT_ROOT) not in sys.path:
 SCHEDULING_SCRIPTS = [
 
     {
+        "name": "Baseline Big",
+        "path": SCRIPT_DIR / "baseline" / "gpt2_medium.py",
+        "module": "gpu_scheduling.experiments.single_gpu.baseline.gpt2_medium",
+        "output_dir": "baseline/medium"
+
+    },
+    {
+        "name": "Baseline small",
+        "path": SCRIPT_DIR / "baseline" / "small.py",
+        "module": "gpu_scheduling.experiments.single_gpu.baseline.small",
+        "output_dir": "baseline/small"
+
+    },
+
+    {
         "name": "Lottery Scheduling Big and Small 120s quanta",
         "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional_big_and_small.py",
         "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_big_and_small",

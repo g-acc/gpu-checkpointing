@@ -11,14 +11,19 @@ CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 CSV_DIR.mkdir(parents=True, exist_ok=True)
 
 jobs = [
-    wq.Job(
-        name=str("gpt2-small baseline"),
-        cmd=["python", 
-             "gpu_scheduling/model_training_scripts/train_gpt2.py", 
-             "--checkpoint_dir", str(CHECKPOINT_DIR / "small_baseline"),
-             "--csv_file", str(CSV_DIR / "gpt2_small_baseline.csv")
-        ]
-    )
+wq.Job(
+    name="gpt2-small",
+    cmd=[
+        "python", "gpu_scheduling/model_training_scripts/train_gpt2.py",
+        "--checkpoint_dir", str(CHECKPOINT_DIR / "small"),
+        "--csv_file", str(CSV_DIR / "gpt2_small.csv"),
+        "--model_name", "gpt2",
+        "--batch_size", "1",
+        "--min_seq_len", "64",
+        "--max_seq_len", "128",
+        "--num_samples", "500"
+    ]
+)
 ]
 
 if __name__ == "__main__":

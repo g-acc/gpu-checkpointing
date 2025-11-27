@@ -8,7 +8,7 @@ One big job, one small job.
 """
 
 # Organized output directory structure
-OUTPUT_DIR = Path("results/single_gpu/lottery_memory_proportional")
+OUTPUT_DIR = Path("results/single_gpu/lottery_memory_proportional_big_and_small")
 CHECKPOINT_DIR = OUTPUT_DIR / "checkpoints"
 CSV_DIR = OUTPUT_DIR / "csvs"
 
@@ -24,15 +24,20 @@ jobs = [
              "--checkpoint_dir", str(CHECKPOINT_DIR / "small"),
              "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
     ),
-    wq.Job(
-        name=str("gpt2-xl"),
-        cmd=["python", 
-             "gpu_scheduling/model_training_scripts/train_gpt2.py",  
-             "--checkpoint_dir", str(CHECKPOINT_DIR / "extra_large"),
-             "--csv_file", str(CSV_DIR / "gpt2_xl.csv"),
-             "--model_name", "gpt2-xl",
-             "--max_seq_len", "128"]
-    ),
+wq.Job(
+    name="gpt2-medium",
+    cmd=[
+        "python", "gpu_scheduling/model_training_scripts/train_gpt2.py",
+        "--checkpoint_dir", str(CHECKPOINT_DIR / "medium"),
+        "--csv_file", str(CSV_DIR / "gpt2_medium.csv"),
+        "--model_name", "gpt2-medium",
+        "--batch_size", "2",
+        "--min_seq_len", "128",
+        "--max_seq_len", "512",
+        "--num_samples", "1500",
+        "--save_every", "30"
+    ]
+)
 ]
 
 def get_next_job_fn(jobs):
@@ -58,6 +63,6 @@ def get_next_job_fn(jobs):
     return choice
 
 if __name__ == "__main__":
-    round_robin_equal_time_scheduler = wq.Scheduler(get_next_job_fn=get_next_job_fn, get_working_time_fn=lambda _: 120)
+    round_robin_equal_time_scheduler = wq.Scheduler(get_next_job_fn=get_next_job_fn, get_working_time_fn=lambda _: 75)
     exp = wq.WorkQueue(jobs, round_robin_equal_time_scheduler, str(OUTPUT_DIR))
     exp.manage_schedule()

@@ -6,4 +6,12 @@ __pycache__/
 *.sublime-*
 .DS_Store
 .venv/
-results/
+# Ignore all checkpoints
+results/**/checkpoints/
+
+# Track CSV files only
+!results/single_gpu/**/csvs/*.csv     # include CSVs
+!results/single_gpu/**/timeseries.csv  # include timeseries.csv
+
+# Ignore everything else inside results
+results/single_gpu/**
