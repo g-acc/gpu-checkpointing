@@ -41,12 +41,12 @@ SCHEDULING_SCRIPTS = [
 
     },
 
-    {
-        "name": "Lottery Scheduling Big and Small 120s quanta",
-        "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional_big_and_small.py",
-        "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_big_and_small",
-        "output_dir": "lottery_memory_proportional_big_and_small"
-    },
+    # {
+    #     "name": "Lottery Scheduling Big and Small 120s quanta",
+    #     "path": SCRIPT_DIR / "lottery_memory_proportional" / "lottery_memory_proportional_big_and_small.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_big_and_small",
+    #     "output_dir": "lottery_memory_proportional_big_and_small"
+    # },
 
     {
         "name": "Lottery Scheduling One Big Many Small 120s quanta",
@@ -54,44 +54,52 @@ SCHEDULING_SCRIPTS = [
         "module": "gpu_scheduling.experiments.single_gpu.lottery_memory_proportional.lottery_memory_proportional_one_big_many_small",
         "output_dir": "lottery_memory_proportional_one_big_many_small"
     },
-    
 
     {
-        "name": "Round Robin Big and Small Jobs 100s Quanta",
-        "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_100s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_100s_quanta",
-        "output_dir": "rr_big_and_small_100s"
-    },
-    {
-        "name": "Round Robin Big and Small Jobs 200s Quanta",
-        "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_200s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_200s_quanta",
-        "output_dir": "rr_big_and_small_200s"
-    }, 
-    {
-        "name": "Round Robin One Big Many Small 100s Quanta",
-        "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_100s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_100s_quanta",
-        "output_dir": "rr_one_big_many_small_100s"
-    },
-    {
-        "name": "Round Robin One Big Many Small 200s Quanta",
-        "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_200s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_200s_quanta",
-        "output_dir": "rr_one_big_many_small_200s"
-    },
-    {
-        "name": "Round Robin Equal Jobs 60s Quanta",
-        "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_60s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_60s_quanta",
-        "output_dir": "rr_equal_60s"
-    },
-    {
-        "name": "Round Robin Equal Jobs 120s Quanta",
-        "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_120s_quanta.py",
-        "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_120s_quanta",
-        "output_dir": "rr_equal_120s"
-    },
+        "name": "Parallel Jobs",
+        "path": SCRIPT_DIR / "parallel_gpu2_small" / "parallel_gpu2_small.py",
+        "module": "gpu_scheduling.experiments.single_gpu.parallel_gpu2.parallel_gpu2_small",
+        "output_dir": "parallel_gpu2"
+ 
+    }
+    
+
+    # {
+    #     "name": "Round Robin Big and Small Jobs 100s Quanta",
+    #     "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_100s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_100s_quanta",
+    #     "output_dir": "rr_big_and_small_100s"
+    # },
+    # {
+    #     "name": "Round Robin Big and Small Jobs 200s Quanta",
+    #     "path": SCRIPT_DIR / "rr_big_and_small" / "rr_big_and_small_200s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_big_and_small.rr_big_and_small_200s_quanta",
+    #     "output_dir": "rr_big_and_small_200s"
+    # }, 
+    # {
+    #     "name": "Round Robin One Big Many Small 100s Quanta",
+    #     "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_100s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_100s_quanta",
+    #     "output_dir": "rr_one_big_many_small_100s"
+    # },
+    # {
+    #     "name": "Round Robin One Big Many Small 200s Quanta",
+    #     "path": SCRIPT_DIR / "rr_one_big_many_small" / "rr_one_big_many_small_200s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_one_big_many_small.rr_one_big_many_small_200s_quanta",
+    #     "output_dir": "rr_one_big_many_small_200s"
+    # },
+    # {
+    #     "name": "Round Robin Equal Jobs 60s Quanta",
+    #     "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_60s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_60s_quanta",
+    #     "output_dir": "rr_equal_60s"
+    # },
+    # {
+    #     "name": "Round Robin Equal Jobs 120s Quanta",
+    #     "path": SCRIPT_DIR / "rr_equal" / "rr_equal_jobs_120s_quanta.py",
+    #     "module": "gpu_scheduling.experiments.single_gpu.rr_equal.rr_equal_jobs_120s_quanta",
+    #     "output_dir": "rr_equal_120s"
+    # },
 ]
 
 

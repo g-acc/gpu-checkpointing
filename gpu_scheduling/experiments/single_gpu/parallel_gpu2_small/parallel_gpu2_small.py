@@ -32,6 +32,6 @@ def get_parallel_jobs(jobs_list):
     return list(range(len(jobs_list)))
 
 if __name__ == "__main__":
-    parallel_scheduler = wq.Scheduler(get_next_job_fn=get_parallel_jobs, get_working_time_fn=lambda _: 60)
+    parallel_scheduler = wq.Scheduler(get_next_job_fn=get_parallel_jobs, get_working_time_fn=lambda _: 9999999)
     exp = wq.WorkQueue(jobs, parallel_scheduler, str(OUTPUT_DIR))
     exp.manage_schedule()

@@ -22,21 +22,21 @@ jobs = [
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py", 
              "--checkpoint_dir", str(CHECKPOINT_DIR / "small_first"),
-             "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
+             "--csv_file", str(CSV_DIR / "first_gpt2_small.csv")]
     ),
     wq.Job(
         name=str("second gpt2-small"),
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py", 
              "--checkpoint_dir", str(CHECKPOINT_DIR / "small_second"),
-             "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
+             "--csv_file", str(CSV_DIR / "second_gpt2_small.csv")]
     ),
     wq.Job(
         name=str("third gpt2-small"),
         cmd=["python", 
              "gpu_scheduling/model_training_scripts/train_gpt2.py", 
              "--checkpoint_dir", str(CHECKPOINT_DIR / "small_third"),
-             "--csv_file", str(CSV_DIR / "gpt2_small.csv")]
+             "--csv_file", str(CSV_DIR / "third_gpt2_small.csv")]
     ),
 wq.Job(
     name="gpt2-medium",

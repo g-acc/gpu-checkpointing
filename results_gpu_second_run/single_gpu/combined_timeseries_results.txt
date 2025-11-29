@@ -1,0 +1,281 @@
+### Combined GPU Scheduler Analysis ###
+
+
+==== RESULTS FOR results/single_gpu/rr_one_big_many_small/200s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-medium: 200.00
+  gpt2-small first: 200.00
+  gpt2-small fourth: 200.00
+  gpt2-small second: 200.00
+  gpt2-small third: 200.00
+
+Avg Memory Usage:
+  gpt2-medium: 10954866688.00
+  gpt2-small first: 485883904.00
+  gpt2-small fourth: 485883904.00
+  gpt2-small second: 485883904.00
+  gpt2-small third: 485883904.00
+
+Time Before First Scheduled:
+  gpt2-medium: 0
+  gpt2-small first: 215
+  gpt2-small second: 416
+  gpt2-small third: 616
+  gpt2-small fourth: 816
+
+Slowdown (with actual timing):
+  gpt2-medium:
+    compute_time:  200.00 seconds
+    wait_time:           800.00 seconds
+    slowdown factor:            5.0000
+  gpt2-small first:
+    compute_time:  200.00 seconds
+    wait_time:           800.00 seconds
+    slowdown factor:            5.0000
+  gpt2-small second:
+    compute_time:  200.00 seconds
+    wait_time:           800.00 seconds
+    slowdown factor:            5.0000
+  gpt2-small third:
+    compute_time:  200.00 seconds
+    wait_time:           800.00 seconds
+    slowdown factor:            5.0000
+  gpt2-small fourth:
+    compute_time:  200.00 seconds
+    wait_time:           800.00 seconds
+    slowdown factor:            5.0000
+
+Fairness: 1.0000
+Total Scheduler Overhead: 0.0007 seconds
+
+
+==== RESULTS FOR results/single_gpu/rr_one_big_many_small/100s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-medium: 375.00
+  gpt2-small first: 225.00
+  gpt2-small fourth: 225.00
+  gpt2-small second: 225.00
+  gpt2-small third: 225.00
+
+Avg Memory Usage:
+  gpt2-medium: 9856378470.40
+  gpt2-small first: 10445957802.67
+  gpt2-small fourth: 9934951765.33
+  gpt2-small second: 10919215104.00
+  gpt2-small third: 9801433088.00
+
+Time Before First Scheduled:
+  gpt2-medium: 0
+  gpt2-small first: 89
+  gpt2-small second: 169
+  gpt2-small third: 249
+  gpt2-small fourth: 329
+
+Slowdown (with actual timing):
+  gpt2-medium:
+    compute_time:  375.00 seconds
+    wait_time:           900.00 seconds
+    slowdown factor:            3.4000
+  gpt2-small first:
+    compute_time:  225.00 seconds
+    wait_time:           1050.00 seconds
+    slowdown factor:            5.6667
+  gpt2-small second:
+    compute_time:  225.00 seconds
+    wait_time:           1050.00 seconds
+    slowdown factor:            5.6667
+  gpt2-small third:
+    compute_time:  225.00 seconds
+    wait_time:           1050.00 seconds
+    slowdown factor:            5.6667
+  gpt2-small fourth:
+    compute_time:  225.00 seconds
+    wait_time:           1050.00 seconds
+    slowdown factor:            5.6667
+
+Fairness: 0.9475
+Total Scheduler Overhead: 0.0029 seconds
+
+
+==== RESULTS FOR results/single_gpu/rr_big_and_small/200s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-medium: 600.00
+  gpt2-small: 200.00
+
+Avg Memory Usage:
+  gpt2-medium: 8194315605.33
+  gpt2-small: 485883904.00
+
+Time Before First Scheduled:
+  gpt2-medium: 0
+  gpt2-small: 213
+
+Slowdown (with actual timing):
+  gpt2-medium:
+    compute_time:  600.00 seconds
+    wait_time:           200.00 seconds
+    slowdown factor:            1.3333
+  gpt2-small:
+    compute_time:  200.00 seconds
+    wait_time:           600.00 seconds
+    slowdown factor:            4.0000
+
+Fairness: 0.8000
+Total Scheduler Overhead: 0.0007 seconds
+
+
+==== RESULTS FOR results/single_gpu/rr_big_and_small/75s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-medium: 675.00
+  gpt2-small: 225.00
+
+Avg Memory Usage:
+  gpt2-medium: 10961391160.89
+  gpt2-small: 10905234090.67
+
+Time Before First Scheduled:
+  gpt2-medium: 0
+  gpt2-small: 86
+
+Slowdown (with actual timing):
+  gpt2-medium:
+    compute_time:  675.00 seconds
+    wait_time:           225.00 seconds
+    slowdown factor:            1.3333
+  gpt2-small:
+    compute_time:  225.00 seconds
+    wait_time:           675.00 seconds
+    slowdown factor:            4.0000
+
+Fairness: 0.8000
+Total Scheduler Overhead: 0.0020 seconds
+
+
+==== RESULTS FOR results/single_gpu/lottery_memory_proportional_big_and_small/timeseries.csv ====
+
+Total Running Time:
+  gpt2-medium: 225.00
+  gpt2-small: 225.00
+
+Avg Memory Usage:
+  gpt2-medium: 8040524458.67
+  gpt2-small: 9085605205.33
+
+Time Before First Scheduled:
+  gpt2-small: 0
+  gpt2-medium: 81
+
+Slowdown (with actual timing):
+  gpt2-small:
+    compute_time:  225.00 seconds
+    wait_time:           225.00 seconds
+    slowdown factor:            2.0000
+  gpt2-medium:
+    compute_time:  225.00 seconds
+    wait_time:           225.00 seconds
+    slowdown factor:            2.0000
+
+Fairness: 1.0000
+Total Scheduler Overhead: 0.0011 seconds
+
+
+==== RESULTS FOR results/single_gpu/lottery_memory_proportional_one_big_many_small/timeseries.csv ====
+
+Total Running Time:
+  first gpt2-small: 225.00
+  gpt2-medium: 225.00
+  second gpt2-small: 225.00
+  third gpt2-small: 225.00
+
+Avg Memory Usage:
+  first gpt2-small: 9433732437.33
+  gpt2-medium: 8211092821.33
+  second gpt2-small: 11092579669.33
+  third gpt2-small: 11305790122.67
+
+Time Before First Scheduled:
+  second gpt2-small: 0
+  third gpt2-small: 81
+  gpt2-medium: 163
+  first gpt2-small: 733
+
+Slowdown (with actual timing):
+  second gpt2-small:
+    compute_time:  225.00 seconds
+    wait_time:           675.00 seconds
+    slowdown factor:            4.0000
+  third gpt2-small:
+    compute_time:  225.00 seconds
+    wait_time:           675.00 seconds
+    slowdown factor:            4.0000
+  gpt2-medium:
+    compute_time:  225.00 seconds
+    wait_time:           675.00 seconds
+    slowdown factor:            4.0000
+  first gpt2-small:
+    compute_time:  225.00 seconds
+    wait_time:           675.00 seconds
+    slowdown factor:            4.0000
+
+Fairness: 1.0000
+Total Scheduler Overhead: 0.0024 seconds
+
+
+==== RESULTS FOR results/single_gpu/rr_equal/120s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-small, first instance: 240.00
+  gpt2-small, second instance: 240.00
+
+Avg Memory Usage:
+  gpt2-small, first instance: 8217034752.00
+  gpt2-small, second instance: 6979715072.00
+
+Time Before First Scheduled:
+  gpt2-small, first instance: 0
+  gpt2-small, second instance: 126
+
+Slowdown (with actual timing):
+  gpt2-small, first instance:
+    compute_time:  240.00 seconds
+    wait_time:           240.00 seconds
+    slowdown factor:            2.0000
+  gpt2-small, second instance:
+    compute_time:  240.00 seconds
+    wait_time:           240.00 seconds
+    slowdown factor:            2.0000
+
+Fairness: 1.0000
+Total Scheduler Overhead: 0.0008 seconds
+
+
+==== RESULTS FOR results/single_gpu/rr_equal/60s_quanta/timeseries.csv ====
+
+Total Running Time:
+  gpt2-small, first instance: 240.00
+  gpt2-small, second instance: 240.00
+
+Avg Memory Usage:
+  gpt2-small, first instance: 10646585344.00
+  gpt2-small, second instance: 12262965248.00
+
+Time Before First Scheduled:
+  gpt2-small, first instance: 0
+  gpt2-small, second instance: 66
+
+Slowdown (with actual timing):
+  gpt2-small, first instance:
+    compute_time:  240.00 seconds
+    wait_time:           240.00 seconds
+    slowdown factor:            2.0000
+  gpt2-small, second instance:
+    compute_time:  240.00 seconds
+    wait_time:           240.00 seconds
+    slowdown factor:            2.0000
+
+Fairness: 1.0000
+Total Scheduler Overhead: 0.0015 seconds

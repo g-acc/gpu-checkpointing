@@ -1,0 +1,4 @@
+timestamp,job_names,working_time,total_running_times,gpu0_mem_used,gpu0_mem_total,gpu0_util_gpu,gpu0_util_mem
+1763183798,"gpt2-small, second parallel instance;gpt2-small, first parallel instance",60,60;60,16730226688,25769803776,98,46
+1763183861,"gpt2-small, second parallel instance",60,120,18644926464,25769803776,100,42
+1763183928,"gpt2-small, second parallel instance",60,180,582156288,25769803776,0,0
