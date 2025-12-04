@@ -78,14 +78,20 @@ if tokenizer.pad_token is None:
 # -----------------------------
 # 5. Load dataset
 # -----------------------------
+dataset_start = time.perf_counter()
 dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split=f"train[:{args.num_samples}]")
+dataset_end = time.perf_counter()
+print("Time to load dataset {dataset_end - dataset_start} sec")
 
 def tokenize_variable(batch):
     seq_lens = [random.randint(args.min_seq_len, args.max_seq_len) for _ in batch["text"]]
     tokenized = [tokenizer(text, truncation=True, max_length=l, padding="max_length") for text, l in zip(batch["text"], seq_lens)]
     return {k: [d[k] for d in tokenized] for k in tokenized[0].keys()}
 
+tokenizer_start = time.perf_counter()
 dataset = dataset.map(tokenize_variable, batched=True, remove_columns=["text"])
+tokenizer_end = time.perf_counter()
+print("Time to tokenize {tokenizer_end - tokenizer_start} sec")
 
 # -----------------------------
 # 6. Data collator & loader
